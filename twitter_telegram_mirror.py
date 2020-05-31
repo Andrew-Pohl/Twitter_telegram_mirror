@@ -1,13 +1,18 @@
+#!/usr/bin/env python3
 from twitter_scraper import get_tweets
-import os.path
+#import os.path
+import os
 import configparser
 import requests
 
+
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
 debugPrints = False
 
 config = configparser.ConfigParser()
 config.optionxform=str
-config.read("settings.ini")
+config.read(os.path.join(__location__, "settings.ini"))
 
 teleBotSettings = dict(config.items('BOT'))
 
@@ -15,8 +20,8 @@ teleBotSettings = dict(config.items('BOT'))
 publish = False
 
 #if we have sent tweets before check where we got to
-if os.path.exists('lastPublished.txt'):
-    f = open("lastPublished.txt", "r")
+if os.path.exists(os.path.join(__location__, 'lastPublished.txt')):
+    f = open(os.path.join(__location__, "lastPublished.txt"), "r")
     tweetID = (f.read())
     publish = True
 
@@ -64,6 +69,6 @@ else:
         print("FAILED TO WELCOME MESSAGE")
 
 #update the file with the new postion
-f = open("lastPublished.txt", "w")
+f = open(os.path.join(__location__, "lastPublished.txt"), "w")
 f.write(latestID)
 f.close()
