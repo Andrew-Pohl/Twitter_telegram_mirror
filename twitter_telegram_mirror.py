@@ -54,6 +54,14 @@ if publish:
 
             if(debugPrints):
                 print("Tweet ID: " + tweet['tweetId'] + "\nbody: " + tweet['text'] + "\ntweetURL: www.twitter.com" + tweet['tweetUrl'] + '\n')
+else:
+    messageToSendToBot = "Hello I'm the twitter bot for www.twitter.com/" + teleBotSettings["TWITTER_HANDLE"] + " I will keep this channel updated with all their latest tweets"
+    botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + teleBotSettings["CHAT_ID"] + '&text=' + messageToSendToBot
+    response = requests.get(botMessage)
+    jsonResponse = response.json()
+
+    if jsonResponse['ok'] != True:
+        print("FAILED TO WELCOME MESSAGE")
 
 #update the file with the new postion
 f = open("lastPublished.txt", "w")
