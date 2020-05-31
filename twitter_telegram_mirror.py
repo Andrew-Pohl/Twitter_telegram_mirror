@@ -31,7 +31,7 @@ latestID = tweets[0]['tweetId']
 if publish:
     #loop across the tweets until we are upto date
     for tweet in tweets:
-        if tweet['tweetId'] == tweetID:
+        if int(tweet['tweetId']) <= int(tweetID):
             break
 
         isRetweet = tweet['isRetweet']
@@ -41,7 +41,7 @@ if publish:
                 tweetOrRetweet = "Retweet"
 
             messageToSendToBot="New " + tweetOrRetweet + " from " + teleBotSettings["TWITTER_HANDLE"] +" " + str(tweet['time']) + "%0A" \
-                               "Tweet URL: www.twitter.com" + tweet['tweetUrl'] + "%0A" \
+                               "Tweet URL: www.twitter.com" + tweet['tweetUrl'] + "%0A%0A" \
                                + tweet['text']
 
             botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + teleBotSettings["CHAT_ID"] + '&text=' + messageToSendToBot
@@ -55,7 +55,7 @@ if publish:
             if(debugPrints):
                 print("Tweet ID: " + tweet['tweetId'] + "\nbody: " + tweet['text'] + "\ntweetURL: www.twitter.com" + tweet['tweetUrl'] + '\n')
 else:
-    messageToSendToBot = "Hello I'm the twitter bot for www.twitter.com/" + teleBotSettings["TWITTER_HANDLE"] + " I will keep this channel updated with all their latest tweets"
+    messageToSendToBot = "Hello I'm the twitter bot for www.twitter.com/" + teleBotSettings["TWITTER_HANDLE"] + " I will keep this channel updated with all their latest tweets %0A%0AFind out what makes me tick here: https://github.com/Andrew-Pohl/Twitter_telegram_mirror"
     botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + teleBotSettings["CHAT_ID"] + '&text=' + messageToSendToBot
     response = requests.get(botMessage)
     jsonResponse = response.json()
