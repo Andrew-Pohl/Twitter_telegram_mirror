@@ -1,5 +1,5 @@
 # Twitter_telegram_mirror
-Simple script to mirror tweets/retweets to telegram via a telegram bot
+Simple script to mirror tweets/retweets to telegram via a telegram bot. No twitter API key is required!. Easy to set up mirror tweets in minutes.
 
 # How to use
 • Create a new telegram bot. Brice Johnsons blog
