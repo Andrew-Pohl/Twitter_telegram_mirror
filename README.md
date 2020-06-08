@@ -3,8 +3,11 @@ Simple script to mirror tweets/retweets to telegram via a telegram bot. No twitt
 
 # Dependecies
 • Python 3.5+
+
 • Twitter scrapper (pip install twitter-scraper)
+
 • Configparser (pip install configparser)
+
 • Request (pip install requests)
 
 # How to use
