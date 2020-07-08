@@ -65,7 +65,7 @@ if publish:
 else:
     messageToSendToBot = "Hello I'm the twitter bot for www.twitter.com/" + teleBotSettings["TWITTER_HANDLE"] + " I will keep this channel updated with all their latest tweets %0A%0AFind out what makes me tick here: https://github.com/Andrew-Pohl/Twitter_telegram_mirror"
     for chatID in chatIDs:
-        botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + str(teleBotSettings["CHAT_ID"]) + '&text=' + messageToSendToBot
+        botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + str(chatID) + '&text=' + messageToSendToBot
         response = requests.get(botMessage)
         jsonResponse = response.json()
 
