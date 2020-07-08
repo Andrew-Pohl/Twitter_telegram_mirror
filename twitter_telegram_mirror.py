@@ -4,6 +4,7 @@ from twitter_scraper import get_tweets
 import os
 import configparser
 import requests
+import ast
 
 
 __location__ = os.path.realpath(
@@ -15,6 +16,7 @@ config.optionxform=str
 config.read(os.path.join(__location__, "settings.ini"))
 
 teleBotSettings = dict(config.items('BOT'))
+chatIDs = ast.literal_eval(config.get("BOT","CHAT_ID"))
 
 #don't send tweets on the first run
 publish = False
@@ -49,24 +51,26 @@ if publish:
                                "Tweet URL: www.twitter.com" + tweet['tweetUrl'] + "%0A%0A" \
                                + tweet['text']
 
-            botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + teleBotSettings["CHAT_ID"] + '&text=' + messageToSendToBot
+            for chatID in chatIDs:
+                botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + str(chatID) + '&text=' + messageToSendToBot
 
-            response = requests.get(botMessage)
-            jsonResponse = response.json()
+                response = requests.get(botMessage)
+                jsonResponse = response.json()
 
-            if jsonResponse['ok'] != True:
-                print("FAILED TO SEND TWEETID = " + tweet['tweetId'])
+                if jsonResponse['ok'] != True:
+                    print("FAILED TO SEND TWEETID = " + tweet['tweetId'])
 
-            if(debugPrints):
-                print("Tweet ID: " + tweet['tweetId'] + "\nbody: " + tweet['text'] + "\ntweetURL: www.twitter.com" + tweet['tweetUrl'] + '\n')
+                if(debugPrints):
+                    print("Tweet ID: " + tweet['tweetId'] + "\nbody: " + tweet['text'] + "\ntweetURL: www.twitter.com" + tweet['tweetUrl'] + '\n')
 else:
     messageToSendToBot = "Hello I'm the twitter bot for www.twitter.com/" + teleBotSettings["TWITTER_HANDLE"] + " I will keep this channel updated with all their latest tweets %0A%0AFind out what makes me tick here: https://github.com/Andrew-Pohl/Twitter_telegram_mirror"
-    botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + teleBotSettings["CHAT_ID"] + '&text=' + messageToSendToBot
-    response = requests.get(botMessage)
-    jsonResponse = response.json()
+    for chatID in chatIDs:
+        botMessage = 'https://api.telegram.org/bot' + teleBotSettings["BOT_KEY"] + '/sendMessage?chat_id=' + str(teleBotSettings["CHAT_ID"]) + '&text=' + messageToSendToBot
+        response = requests.get(botMessage)
+        jsonResponse = response.json()
 
-    if jsonResponse['ok'] != True:
-        print("FAILED TO WELCOME MESSAGE")
+        if jsonResponse['ok'] != True:
+            print("FAILED TO WELCOME MESSAGE")
 
 #update the file with the new postion
 f = open(os.path.join(__location__, "lastPublished.txt"), "w")
